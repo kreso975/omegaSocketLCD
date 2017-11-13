@@ -65,63 +65,69 @@ int main( int argc, char* argv[] )
     lcd->setCursor( 0,0 );
 
 
-    if ( argc > 1 )
+    //
+    // INITIALIZE SOCKET
+    //
+    int socket_desc , client_sock , c , *new_sock;
+    struct sockaddr_in server , client;
+
+    //Create socket
+    socket_desc = socket(AF_INET , SOCK_STREAM , 0);
+    if (socket_desc == -1)
     {
-        std::string arg = argv[1];
-        if ( ( arg == "-h" ) || ( arg == "--help" ) )
-            show_usage(argv[0]); // Show help
+        printf("Could not create socket");
+    }
+    puts("Socket created");
 
-        else if ( ( arg == "-c" ) || ( arg == "--clear" ) )
-            lcd->clear(); // Clear LCD - set cursor position to zero
+    //Prepare the sockaddr_in structure
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = htons( 9001 );
 
-        else if ( ( arg == "-b" ) || ( arg == "--backliteOff" ) )
-            lcd->noBacklight();
+    //Bind
+    if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
+    {
+        //print the error message
+        perror("bind failed. Error");
+        return 1;
+    }
+    puts("bind done");
 
-        else if ( ( arg == "-B" ) || ( arg == "--backliteOn" ) )
-            lcd->backlight();
+    //Listen
+    listen(socket_desc , 3);
 
-        else if ( ( arg == "-sl" ) || ( arg == "--scrolleft" ) )
-            lcd->scrollDisplayLeft();
+    //Accept and incoming connection
+    puts("Waiting for incoming connections...");
+    c = sizeof(struct sockaddr_in);
 
-        else if ( ( arg == "-sr" ) || ( arg == "--scrolright" ) )
-            lcd->scrollDisplayRight();
 
-        else if ( ( arg == "-w" ) || ( arg == "--write" ) )
+    //Accept and incoming connection
+    puts("Waiting for incoming connections...");
+    c = sizeof(struct sockaddr_in);
+    while( (client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t* restrict)&c) ) )
+    {
+        puts("Connection accepted");
+
+        pthread_t sniffer_thread;
+        new_sock = malloc(1);
+        *new_sock = client_sock;
+
+        if( pthread_create( &sniffer_thread , NULL ,  connection_handler , (void*) new_sock) < 0)
         {
-            if ( argv[2] )
-            {
-                lcd->print( argv[2] );
-            }
-            else
-            {
-                show_usage(argv[0]); // Show help - no String
-                return 1;
-            }
-
-            if ( argv[3] )
-            {
-                lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
-                lcd->print( argv[3] ); // Output second input parameter to second row of LCD
-            }
-
-            // Let's play a bit
-            sleep(5);
-            lcd->noBacklight();
-            sleep(5);
-            lcd->backlight();
-            sleep(5);
-            lcd->scrollDisplayRight();
-
+            perror("could not create thread");
+            return 1;
         }
-    }
-    else
-    {
-        show_usage( argv[0] );
-        return 0;
+
+        //Now join the thread , so that we dont terminate before the thread
+        pthread_join( sniffer_thread , NULL);
+        puts("Handler assigned");
     }
 
-    // Default output to first row of LCD if no input parameters
-    //  lcd->print((char *)"Omega says Hi!");
+    if ( client_sock < 0 )
+    {
+        perror("accept failed");
+        return 1;
+    }
 
     return 0;
 }
