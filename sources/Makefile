@@ -12,7 +12,7 @@ INC=-I ./headers
 TARGET=omegaSocketLCD
 
 # Default target - build everything
-all: precomp $(TARGET)
+all:	precomp $(TARGET)
 
 # Link target
 $(TARGET): $(OBJECTS)
