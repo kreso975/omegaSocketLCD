@@ -157,65 +157,45 @@ void *connection_handler( void *socket_desc )
         //Send the message back to client
         write(sock , client_message , strlen(client_message));
 
-        //
-        /* This must be integrated
-        //
-        if ( argc > 1 )
+
+        if ( read_size > 0 )
         {
-            std::string arg = argv[1];
-            if ( ( arg == "-h" ) || ( arg == "--help" ) )
+            if ( ( client_message == "-h" ) || ( client_message == "--help" ) )
                 show_usage(argv[0]); // Show help
 
-            else if ( ( arg == "-c" ) || ( arg == "--clear" ) )
+            else if ( ( client_message == "-c" ) || ( client_message == "--clear" ) )
                 lcd->clear(); // Clear LCD - set cursor position to zero
 
-            else if ( ( arg == "-b" ) || ( arg == "--backliteOff" ) )
+            else if ( ( client_message == "-b" ) || ( client_message == "--backliteOff" ) )
                 lcd->noBacklight();
 
-            else if ( ( arg == "-B" ) || ( arg == "--backliteOn" ) )
+            else if ( ( client_message == "-B" ) || ( client_message == "--backliteOn" ) )
                 lcd->backlight();
 
-            else if ( ( arg == "-sl" ) || ( arg == "--scrolleft" ) )
+            else if ( ( client_message == "-sl" ) || ( client_message == "--scrolleft" ) )
                 lcd->scrollDisplayLeft();
 
-            else if ( ( arg == "-sr" ) || ( arg == "--scrolright" ) )
+            else if ( ( client_message == "-sr" ) || ( client_message == "--scrolright" ) )
                 lcd->scrollDisplayRight();
 
-            else if ( ( arg == "-w" ) || ( arg == "--write" ) )
+            else if ( ( client_message == "-w" ) || ( client_message == "--write" ) )
             {
-                if ( argv[2] )
-                {
-                    lcd->print( argv[2] );
-                }
-                else
-                {
-                    show_usage(argv[0]); // Show help - no String
-                    return 1;
-                }
 
-                if ( argv[3] )
-                {
-                    lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
-                    lcd->print( argv[3] ); // Output second input parameter to second row of LCD
-                }
+                lcd->print( "Ovo je prvi red" );
+                lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
+                lcd->print( "Ovo je drugi red" ); // Output second input parameter to second row of LCD
 
-                // Let's play a bit
-                sleep(5);
-                lcd->noBacklight();
-                sleep(5);
-                lcd->backlight();
-                sleep(5);
-                lcd->scrollDisplayRight();
 
             }
         }
+            /*
         else
         {
             show_usage( argv[0] );
             return 0;
         }
 
-         */
+        */
     }
 
     if(read_size == 0)
