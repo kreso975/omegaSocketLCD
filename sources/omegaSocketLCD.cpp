@@ -104,7 +104,7 @@ int main( int argc, char* argv[] )
     //Accept and incoming connection
     puts("Waiting for incoming connections...");
     c = sizeof(struct sockaddr_in);
-    while( (client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t* restrict)&c) ) )
+    while( (client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t* )&c) ) )
     {
         puts("Connection accepted");
 
