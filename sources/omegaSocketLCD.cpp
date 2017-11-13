@@ -40,10 +40,6 @@ static void show_usage( std::string argv )
 				<< std::endl;
 }
 
-//the thread function
-void *connection_handler( void * );
-
-
 int main( int argc, char* argv[] )
 {
     I2CAccess * i2cAcc;                 // For general I2C Access
