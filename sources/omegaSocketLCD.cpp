@@ -161,7 +161,7 @@ void *connection_handler( void *socket_desc )
         if ( read_size > 0 )
         {
             if ( ( client_message == "-h" ) || ( client_message == "--help" ) )
-                show_usage(argv[0]); // Show help
+                show_usage(0); // Show help
 
             else if ( ( client_message == "-c" ) || ( client_message == "--clear" ) )
                 lcd->clear(); // Clear LCD - set cursor position to zero
