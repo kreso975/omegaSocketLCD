@@ -68,7 +68,7 @@ endef
 # directory if it does not already exist.  Likewise $(INSTALL_BIN) contains the
 # command to copy the binary file from its current location (in our case the bu$
 # directory) to the install directory.
-define Package/omegaLCD/install
+define Package/omegaSocketLCD/install
 	$(INSTALL_DIR) $(1)/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/omegaSocketLCD $(1)/bin/
 endef
