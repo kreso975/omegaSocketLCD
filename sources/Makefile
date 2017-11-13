@@ -12,17 +12,15 @@ INC=-I ./headers
 TARGET=omegaSocketLCD
 
 # Default target - build everything
-all:	precomp $(TARGET)
+all: precomp $(TARGET)
 
 # Link target
 $(TARGET): $(OBJECTS)
 	$(CXX) $(LDFLAGS) -o $(TARGET) $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $(TARGET)
 
 # Compile sources 
 build/%.o: ./sources/%.cpp
 	$(CXX) $(CCFLAGS) $(INC) $< -o $@
-	$(CC) $(CFLAGS) -c $@
 
 
 # Remove all created files
