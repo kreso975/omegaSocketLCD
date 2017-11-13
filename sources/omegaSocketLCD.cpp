@@ -63,7 +63,7 @@ int main( int argc, char* argv[] )
     lcdDevice = new I2CDevice(i2cAcc, I2C_ADDR);
 
     // Create the LCD with access via the I2C Device using the specific data for the actual LCD
-    lcd = new LCD_I2C(lcdDevice,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin, BACKLIGHT_PIN, BACKLIGHT_POLARITY);
+    static void* lcd = new LCD_I2C(lcdDevice,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin, BACKLIGHT_PIN, BACKLIGHT_POLARITY);
 
     // Initialise the LCD for columns and rows
     lcd->begin(LCD_NUM_COL, LCD_NUM_ROW);
@@ -165,26 +165,26 @@ void *connection_handler( void *socket_desc )
                 show_usage(0); // Show help
 
             else if ( ( client_message == "-c" ) || ( client_message == "--clear" ) )
-                this->lcd->clear(); // Clear LCD - set cursor position to zero
+                lcd->clear(); // Clear LCD - set cursor position to zero
 
             else if ( ( client_message == "-b" ) || ( client_message == "--backliteOff" ) )
-                this->lcd->noBacklight();
+                lcd->noBacklight();
 
             else if ( ( client_message == "-B" ) || ( client_message == "--backliteOn" ) )
-                this->lcd->backlight();
+                lcd->backlight();
 
             else if ( ( client_message == "-sl" ) || ( client_message == "--scrolleft" ) )
-                this->lcd->scrollDisplayLeft();
+                lcd->scrollDisplayLeft();
 
             else if ( ( client_message == "-sr" ) || ( client_message == "--scrolright" ) )
-                this->lcd->scrollDisplayRight();
+                lcd->scrollDisplayRight();
 
             else if ( ( client_message == "-w" ) || ( client_message == "--write" ) )
             {
 
-                this->lcd->print( "Ovo je prvi red" );
-                this->lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
-                this->lcd->print( "Ovo je drugi red" ); // Output second input parameter to second row of LCD
+                lcd->print( "Ovo je prvi red" );
+                lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
+                lcd->print( "Ovo je drugi red" ); // Output second input parameter to second row of LCD
 
 
             }
