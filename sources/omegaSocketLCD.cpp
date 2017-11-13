@@ -63,7 +63,7 @@ int main( int argc, char* argv[] )
     lcdDevice = new I2CDevice(i2cAcc, I2C_ADDR);
 
     // Create the LCD with access via the I2C Device using the specific data for the actual LCD
-    lcd = new LCD_I2C(lcdDevice,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin, BACKLIGHT_PIN, BACKLIGHT_POLARITY);
+    static lcd = new LCD_I2C(lcdDevice,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin, BACKLIGHT_PIN, BACKLIGHT_POLARITY);
 
     // Initialise the LCD for columns and rows
     lcd->begin(LCD_NUM_COL, LCD_NUM_ROW);
@@ -139,6 +139,7 @@ int main( int argc, char* argv[] )
 //
 void *connection_handler( void *socket_desc )
 {
+
     //Get the socket descriptor
     int sock = *( int* )socket_desc;
     int read_size;
