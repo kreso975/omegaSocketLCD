@@ -109,7 +109,7 @@ int main( int argc, char* argv[] )
         puts("Connection accepted");
 
         pthread_t sniffer_thread;
-        new_sock = (int*)malloc(num * sizeof(int));
+        new_sock = (int*)malloc(sizeof(int));
         //new_sock dimensions[1];
         //std::vector<new_sock> dimensions_new(1);
         *new_sock = client_sock;
