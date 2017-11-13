@@ -36,7 +36,7 @@ define Package/omegaSocketLCD
 	SECTION:=utils
 	CATEGORY:=Utilities
 	TITLE:=omegaSocketLCD -- 2x16 LCD
-	DEPENDS:=+libstdcpp
+	DEPENDS:=+libstdcpp +libpthread
 endef
 
 define Package/omegaSocketLCD/description
