@@ -3,6 +3,12 @@
 #include "LCD_I2C.h"
 #include <iostream>
 #include <string>
+#include <stdio.h>
+#include <stdlib.h>                      //strlen
+#include <sys/socket.h>
+#include <arpa/inet.h>                   //inet_addr
+#include <unistd.h>                      //write
+#include <pthread.h>                     //for threading , link with lpthread
 
 // Set up the following as it applies to your specific LCD device
 #define I2C_ADDR 0x3F                   // <<----- The I2C address for your LCD.  Find it using "i2cdetect -y 0"
@@ -18,6 +24,9 @@
 
 #define LCD_NUM_COL 16                  // <<----- The number of columns for your LCD
 #define LCD_NUM_ROW 2                   // <<----- The number of rows for your LCD
+
+//the thread function
+void *connection_handler( void * );
 
 
 static void show_usage( std::string argv )
