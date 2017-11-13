@@ -2,7 +2,7 @@
 #include "I2CDevice.h"
 #include "LCD_I2C.h"
 #include <iostream>
-#include <string>
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>                      //strlen
 #include <sys/socket.h>
