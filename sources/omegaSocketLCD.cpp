@@ -46,19 +46,16 @@ void *connection_handler( void * );
 
 int main( int argc, char* argv[] )
 {
-    //
-    // INITIALIZE LCD
-    //
     I2CAccess * i2cAcc;                 // For general I2C Access
     I2CDevice * lcdDevice;              // Specific I2C Device
     LCD_I2C * lcd;                      // The LCD Display
-    
+
     // Create and setup I2C Access on channel 0 - the only channel the Omega has
     i2cAcc = new I2CAccessSystem(0);
-    
+
     // Create and setup I2C LCD device using the I2C Access with the specified I2C Address
     lcdDevice = new I2CDevice(i2cAcc, I2C_ADDR);
-    
+
     // Create the LCD with access via the I2C Device using the specific data for the actual LCD
     lcd = new LCD_I2C(lcdDevice,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin, BACKLIGHT_PIN, BACKLIGHT_POLARITY);
 
@@ -68,71 +65,66 @@ int main( int argc, char* argv[] )
     // Position LCD cursor to start of first row
     lcd->setCursor( 0,0 );
 
-    //
-    // INITIALIZE SOCKET
-    //
-    int socket_desc , client_sock , c , *new_sock;
-    struct sockaddr_in server , client;
 
-    //Create socket
-    socket_desc = socket(AF_INET , SOCK_STREAM , 0);
-    if (socket_desc == -1)
+    if ( argc > 1 )
     {
-        printf("Could not create socket");
-    }
-    puts("Socket created");
+        std::string arg = argv[1];
+        if ( ( arg == "-h" ) || ( arg == "--help" ) )
+            show_usage(argv[0]); // Show help
 
-    //Prepare the sockaddr_in structure
-    server.sin_family = AF_INET;
-    server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons( 9001 );
+        else if ( ( arg == "-c" ) || ( arg == "--clear" ) )
+            lcd->clear(); // Clear LCD - set cursor position to zero
 
-    //Bind
-    if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
-    {
-        //print the error message
-        perror("bind failed. Error");
-        return 1;
-    }
-    puts("bind done");
+        else if ( ( arg == "-b" ) || ( arg == "--backliteOff" ) )
+            lcd->noBacklight();
 
-    //Listen
-    listen(socket_desc , 3);
+        else if ( ( arg == "-B" ) || ( arg == "--backliteOn" ) )
+            lcd->backlight();
 
-    //Accept and incoming connection
-    puts("Waiting for incoming connections...");
-    c = sizeof(struct sockaddr_in);
+        else if ( ( arg == "-sl" ) || ( arg == "--scrolleft" ) )
+            lcd->scrollDisplayLeft();
 
+        else if ( ( arg == "-sr" ) || ( arg == "--scrolright" ) )
+            lcd->scrollDisplayRight();
 
-    //Accept and incoming connection
-    puts("Waiting for incoming connections...");
-    c = sizeof(struct sockaddr_in);
-    while( (client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t* restrict)&c) ) )
-    {
-        puts("Connection accepted");
-
-        pthread_t sniffer_thread;
-        new_sock = malloc(1);
-        *new_sock = client_sock;
-
-        if( pthread_create( &sniffer_thread , NULL ,  connection_handler , (void*) new_sock) < 0)
+        else if ( ( arg == "-w" ) || ( arg == "--write" ) )
         {
-            perror("could not create thread");
-            return 1;
+            if ( argv[2] )
+            {
+                lcd->print( argv[2] );
+            }
+            else
+            {
+                show_usage(argv[0]); // Show help - no String
+                return 1;
+            }
+
+            if ( argv[3] )
+            {
+                lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
+                lcd->print( argv[3] ); // Output second input parameter to second row of LCD
+            }
+
+            // Let's play a bit
+            sleep(5);
+            lcd->noBacklight();
+            sleep(5);
+            lcd->backlight();
+            sleep(5);
+            lcd->scrollDisplayRight();
+
         }
-
-        //Now join the thread , so that we dont terminate before the thread
-        pthread_join( sniffer_thread , NULL);
-        puts("Handler assigned");
     }
-
-    if ( client_sock < 0 )
+    else
     {
-        perror("accept failed");
-        return 1;
+        show_usage( argv[0] );
+        return 0;
     }
 
-	return 0;
+    // Default output to first row of LCD if no input parameters
+    //  lcd->print((char *)"Omega says Hi!");
+
+    return 0;
 }
 
 //
