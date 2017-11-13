@@ -109,7 +109,9 @@ int main( int argc, char* argv[] )
         puts("Connection accepted");
 
         pthread_t sniffer_thread;
-        new_sock = malloc(1);
+        //new_sock = (int*)malloc(num * sizeof(int));
+        new_sock dimensions[3];
+        std::vector<new_sock> dimensions_new(3);
         *new_sock = client_sock;
 
         if( pthread_create( &sniffer_thread , NULL ,  connection_handler , (void*) new_sock) < 0)
