@@ -57,7 +57,9 @@ endef
 
 # We do not need to define Build/Configure or Build/Compile directives
 # The defaults are appropriate for compiling a simple program such as this one
-
+define Build/Compile
+ $(MAKE) -C $(PKG_BUILD_DIR) $(TARGET_CONFIGURE_OPTS)
+endef
 
 # Specify where and how to install the program. Since we only have one file,
 # the hellocpp executable, install it by copying it to the /bin directory on
