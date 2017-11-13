@@ -1,4 +1,5 @@
 CCFLAGS=-c -O2 -fPIC
+LDFLAGS=-lpthread -ldl
 
 # build omegaSocketLCD executable when user executes "make"
 SOURCES=$(shell find -name "*.cpp" | sed s:./:: | tr "\n" " ")
