@@ -125,3 +125,104 @@ int main( int argc, char* argv[] )
 
     return 0;
 }
+
+//
+//  This will handle connection for each client
+//
+void *connection_handler( void *socket_desc )
+{
+    //Get the socket descriptor
+    int sock = *( int* )socket_desc;
+    int read_size;
+    char *message , client_message[2000];
+
+    //Send some messages to the client
+    message = "Greetings! I am your connection handler\n";
+    write( sock , message , strlen(message) );
+
+    message = "Now type something and i shall repeat what you type \n";
+    write( sock , message , strlen(message) );
+
+    //Receive a message from client
+    while( (read_size = recv(sock , client_message , 2000 , 0)) > 0 )
+    {
+        //Send the message back to client
+        write(sock , client_message , strlen(client_message));
+
+        //
+        /* This must be integrated
+        //
+        if ( argc > 1 )
+        {
+            std::string arg = argv[1];
+            if ( ( arg == "-h" ) || ( arg == "--help" ) )
+                show_usage(argv[0]); // Show help
+
+            else if ( ( arg == "-c" ) || ( arg == "--clear" ) )
+                lcd->clear(); // Clear LCD - set cursor position to zero
+
+            else if ( ( arg == "-b" ) || ( arg == "--backliteOff" ) )
+                lcd->noBacklight();
+
+            else if ( ( arg == "-B" ) || ( arg == "--backliteOn" ) )
+                lcd->backlight();
+
+            else if ( ( arg == "-sl" ) || ( arg == "--scrolleft" ) )
+                lcd->scrollDisplayLeft();
+
+            else if ( ( arg == "-sr" ) || ( arg == "--scrolright" ) )
+                lcd->scrollDisplayRight();
+
+            else if ( ( arg == "-w" ) || ( arg == "--write" ) )
+            {
+                if ( argv[2] )
+                {
+                    lcd->print( argv[2] );
+                }
+                else
+                {
+                    show_usage(argv[0]); // Show help - no String
+                    return 1;
+                }
+
+                if ( argv[3] )
+                {
+                    lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
+                    lcd->print( argv[3] ); // Output second input parameter to second row of LCD
+                }
+
+                // Let's play a bit
+                sleep(5);
+                lcd->noBacklight();
+                sleep(5);
+                lcd->backlight();
+                sleep(5);
+                lcd->scrollDisplayRight();
+
+            }
+        }
+        else
+        {
+            show_usage( argv[0] );
+            return 0;
+        }
+
+         */
+    }
+
+    if(read_size == 0)
+    {
+        puts("Client disconnected");
+        fflush(stdout);
+    }
+    else if(read_size == -1)
+    {
+        perror("recv failed");
+    }
+
+    //Free the socket pointer
+    close( sock );
+    free(socket_desc);
+
+    return 0;
+}
