@@ -9,6 +9,8 @@
 #include <arpa/inet.h>                   //inet_addr
 #include <unistd.h>                      //write
 #include <pthread.h>                     //for threading , link with lpthread
+#include <stdint.h>
+typedef uint32_t socklen_t;
 
 // Set up the following as it applies to your specific LCD device
 #define I2C_ADDR 0x3F                   // <<----- The I2C address for your LCD.  Find it using "i2cdetect -y 0"
@@ -24,6 +26,11 @@
 
 #define LCD_NUM_COL 16                  // <<----- The number of columns for your LCD
 #define LCD_NUM_ROW 2                   // <<----- The number of rows for your LCD
+
+// Socket Server
+#define SERV_PORT 9001
+
+
 
 //the thread function
 void *connection_handler( void * );
@@ -82,7 +89,7 @@ int main( int argc, char* argv[] )
     //Prepare the sockaddr_in structure
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons( 9001 );
+    server.sin_port = htons( SERV_PORT );
 
     //Bind
     if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
@@ -94,17 +101,12 @@ int main( int argc, char* argv[] )
     puts("bind done");
 
     //Listen
-    listen(socket_desc , 3);
+    listen(socket_desc , 20);
 
     //Accept and incoming connection
     puts("Waiting for incoming connections...");
     c = sizeof(struct sockaddr_in);
-
-
-    //Accept and incoming connection
-    puts("Waiting for incoming connections...");
-    c = sizeof(struct sockaddr_in);
-    while( (client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t* )&c) ) )
+    while( (client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c) ) )
     {
         puts("Connection accepted");
 
