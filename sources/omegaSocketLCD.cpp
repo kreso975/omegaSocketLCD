@@ -29,8 +29,8 @@ typedef uint32_t socklen_t;
 
 // Socket Server
 int SERV_PORT = 9001;
-char * line1;
-char * line2;
+char *line1;
+char *line2;
 
 I2CAccess * i2cAcc;                 // For general I2C Access
 I2CDevice * lcdDevice;              // Specific I2C Device
@@ -92,8 +92,8 @@ int main( int argc, char* argv[] )
     // Position LCD cursor to start of first row
     lcd->setCursor( 0,0 );
 
-    char * line1 = "Ovo je prvi red";
-    char * line2 = "Ovo je drugi red";
+    line1 = "Ovo je prvi red";
+    line2 = "Ovo je drugi red";
     lcd->print( line1 );
     lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
     lcd->print( line2 ); // Output second input parameter to second row of LCD
