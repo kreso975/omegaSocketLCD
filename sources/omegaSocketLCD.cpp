@@ -124,7 +124,7 @@ int main( int argc, char* argv[] )
         perror("bind failed. Error");
         return 1;
     }
-    puts("bind done");
+    puts("bind done on ".SERV_PORT);
 
     //Listen
     listen(socket_desc , 20);
