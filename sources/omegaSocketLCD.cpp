@@ -52,25 +52,6 @@ static void show_usage( std::string argv )
 
 int main( int argc, char* argv[] )
 {
-    I2CAccess * i2cAcc;                 // For general I2C Access
-    I2CDevice * lcdDevice;              // Specific I2C Device
-    LCD_I2C * lcd;                      // The LCD Display
-
-    // Create and setup I2C Access on channel 0 - the only channel the Omega has
-    i2cAcc = new I2CAccessSystem(0);
-
-    // Create and setup I2C LCD device using the I2C Access with the specified I2C Address
-    lcdDevice = new I2CDevice(i2cAcc, I2C_ADDR);
-
-    // Create the LCD with access via the I2C Device using the specific data for the actual LCD
-    static void* lcd = new LCD_I2C(lcdDevice,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin, BACKLIGHT_PIN, BACKLIGHT_POLARITY);
-
-    // Initialise the LCD for columns and rows
-    lcd->begin(LCD_NUM_COL, LCD_NUM_ROW);
-
-    // Position LCD cursor to start of first row
-    lcd->setCursor( 0,0 );
-
 
     //
     // INITIALIZE SOCKET
@@ -139,6 +120,25 @@ int main( int argc, char* argv[] )
 //
 void *connection_handler( void *socket_desc )
 {
+
+    I2CAccess * i2cAcc;                 // For general I2C Access
+    I2CDevice * lcdDevice;              // Specific I2C Device
+    LCD_I2C * lcd;                      // The LCD Display
+
+    // Create and setup I2C Access on channel 0 - the only channel the Omega has
+    i2cAcc = new I2CAccessSystem(0);
+
+    // Create and setup I2C LCD device using the I2C Access with the specified I2C Address
+    lcdDevice = new I2CDevice(i2cAcc, I2C_ADDR);
+
+    // Create the LCD with access via the I2C Device using the specific data for the actual LCD
+    lcd = new LCD_I2C(lcdDevice,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin, BACKLIGHT_PIN, BACKLIGHT_POLARITY);
+
+    // Initialise the LCD for columns and rows
+    lcd->begin(LCD_NUM_COL, LCD_NUM_ROW);
+
+    // Position LCD cursor to start of first row
+    lcd->setCursor( 0,0 );
 
     //Get the socket descriptor
     int sock = *( int* )socket_desc;
