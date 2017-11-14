@@ -164,7 +164,7 @@ void *connection_handler( void *socket_desc )
     //Get the socket descriptor
     int sock = *( int* )socket_desc;
     int read_size;
-    char* message , client_message[2000];
+    const char* message , client_message[2000];
 
     //Send some messages to the client
     message = "Greetings! I am your connection handler\n";
