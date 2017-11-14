@@ -40,6 +40,7 @@ static void show_usage( std::string argv )
 {
 	std::cerr 	<< "Usage: <option> [<STRING> <STRING>]\n"
 				<< "Options:\n"
+                << "\t-p,--port\t\tSet port to be used\n"
 				<< "\t-h,--help\t\tShow this help message\n"
 				<< "\t-c,--clear\t\tClear LCD screen\n"
 				<< "\t-b,--backliteOff\tLCD backlite Off\n"
@@ -52,6 +53,21 @@ static void show_usage( std::string argv )
 
 int main( int argc, char* argv[] )
 {
+
+    // Use arg to choose port number
+    if ( argc > 1 )
+    {
+        std::string arg = argv[1];
+        if ((arg == "-p") || (arg == "--port"))
+        {
+            if (argv[2])
+                SERV_PORT = argv[2];
+        }
+        else if ((arg == "-h") || (arg == "--help"))
+            show_usage( argv[0] );
+
+    }
+
 
     //
     // INITIALIZE SOCKET
@@ -150,7 +166,7 @@ void *connection_handler( void *socket_desc )
     //Get the socket descriptor
     int sock = *( int* )socket_desc;
     int read_size;
-    char *message , client_message[2000];
+    char* message , client_message[2000];
 
     //Send some messages to the client
     message = "Greetings! I am your connection handler\n";
