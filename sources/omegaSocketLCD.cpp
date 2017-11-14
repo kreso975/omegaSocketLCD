@@ -125,7 +125,7 @@ int main( int argc, char* argv[] )
         return 1;
     }
     printf("Binds on port: ");
-    puts( (const char) SERV_PORT );
+    puts( (char*) SERV_PORT );
 
     //Listen
     listen(socket_desc , 20);
