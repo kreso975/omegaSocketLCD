@@ -190,12 +190,9 @@ void *connection_handler( void *socket_desc )
         else if ( ( client_message == "-w" ) || ( client_message == "--write" ) )
         {
 
-            char* line1 = "Ovo je prvi red";
-            char* line2 = "Ovo je drugi red";
             lcd->print( line1 );
             lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
             lcd->print( line2 ); // Output second input parameter to second row of LCD
-
 
         }
 
