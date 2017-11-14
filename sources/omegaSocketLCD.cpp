@@ -29,8 +29,8 @@ typedef uint32_t socklen_t;
 
 // Socket Server
 int SERV_PORT = 9001;
-char line1;
-char line2;
+char* line1;
+char* line2;
 
 I2CAccess * i2cAcc;                 // For general I2C Access
 I2CDevice * lcdDevice;              // Specific I2C Device
