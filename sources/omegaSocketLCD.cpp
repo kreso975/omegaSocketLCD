@@ -139,10 +139,8 @@ void *connection_handler( void *socket_desc )
 
     // Position LCD cursor to start of first row
     lcd->setCursor( 0,0 );
+    lcd->noBacklight();
 
-    lcd->print( "Ovo je prvi red" );
-    lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
-    lcd->print( "Ovo je drugi red" ); // Output second input parameter to second row of LCD
 
     //Get the socket descriptor
     int sock = *( int* )socket_desc;
