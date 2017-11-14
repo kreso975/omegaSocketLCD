@@ -152,13 +152,13 @@ void *connection_handler( void *socket_desc )
     write( sock , message , strlen(message) );
 
     message = "Now type something and i shall repeat what you type \n";
-    write( sock , message , strlen(message) );
+    write( sock , char (message) , strlen(message) );
 
     //Receive a message from client
     while( (read_size = recv(sock , client_message , 2000 , 0)) > 0 )
     {
         //Send the message back to client
-        write(sock , client_message , strlen(client_message));
+        write(sock , client_message , strlen(client_message)+1);
 
         if ( ( client_message == "-h" ) || ( client_message == "--help" ) )
             show_usage(0); // Show help
@@ -167,11 +167,15 @@ void *connection_handler( void *socket_desc )
             lcd->clear(); // Clear LCD - set cursor position to zero
 
         else if ( ( client_message == "-b" ) || ( client_message == "--backliteOff" ) )
+        {
             lcd->noBacklight();
-
+            puts("BackLite OFF");
+        }
         else if ( ( client_message == "-B" ) || ( client_message == "--backliteOn" ) )
+        {
             lcd->backlight();
-
+            puts("BackLite ON");
+        }
         else if ( ( client_message == "-sl" ) || ( client_message == "--scrolleft" ) )
             lcd->scrollDisplayLeft();
 
@@ -197,6 +201,7 @@ void *connection_handler( void *socket_desc )
         }
 
         */
+        memset(client_message,"\n",sizeof(client_message));
     }
 
     if(read_size == 0)
