@@ -63,7 +63,7 @@ int main( int argc, char* argv[] )
         if ((arg == "-p") || (arg == "--port"))
         {
             if (argv[2])
-                SERV_PORT = argv[2];
+                SERV_PORT = int ( argv[2] );
         }
         else if ((arg == "-h") || (arg == "--help"))
             show_usage( argv[0] );
