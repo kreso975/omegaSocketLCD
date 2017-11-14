@@ -148,17 +148,18 @@ void *connection_handler( void *socket_desc )
     char *message , client_message[2000];
 
     //Send some messages to the client
-    message = "Greetings! I am your connection handler\n";
+    std::string message ("Greetings! I am your connection handler\n");
     write( sock , message , strlen(message) );
 
-    message = "Now type something and i shall repeat what you type \n";
-    write( sock , char (message) , strlen(message) );
+    std::string message ("Now type something and i shall repeat what you type \n");
+    write( sock , message , strlen(message) );
 
     //Receive a message from client
     while( (read_size = recv(sock , client_message , 2000 , 0)) > 0 )
     {
+        std::string ourMessage (client_message);
         //Send the message back to client
-        write(sock , client_message , strlen(client_message)+1);
+        write( sock , client_message , strlen(client_message) );
 
         if ( ( client_message == "-h" ) || ( client_message == "--help" ) )
             show_usage(0); // Show help
@@ -166,7 +167,7 @@ void *connection_handler( void *socket_desc )
         else if ( ( client_message == "-c" ) || ( client_message == "--clear" ) )
             lcd->clear(); // Clear LCD - set cursor position to zero
 
-        else if ( ( client_message == "-b" ) || ( client_message == "--backliteOff" ) )
+        else if ( ourMessage.compare("-b") || ourMessage.compare("--backliteOff" ) )
         {
             lcd->noBacklight();
             puts("BackLite OFF");
@@ -184,12 +185,12 @@ void *connection_handler( void *socket_desc )
 
         else if ( ( client_message == "-w" ) || ( client_message == "--write" ) )
         {
+            std::string line1 ("Ovo je prvi red");
+            std::string line2 ("Ovo je drugi red");
 
-            lcd->print( "Ovo je prvi red" );
+            lcd->print( line1 );
             lcd->setCursor( 0,1 ); // Position LCD cursor to start of second row
-            lcd->print( "Ovo je drugi red" ); // Output second input parameter to second row of LCD
-
-
+            lcd->print( line2 ); // Output second input parameter to second row of LCD
         }
 
 
@@ -201,7 +202,7 @@ void *connection_handler( void *socket_desc )
         }
 
         */
-        memset(client_message,"\n",sizeof(client_message));
+
     }
 
     if(read_size == 0)
