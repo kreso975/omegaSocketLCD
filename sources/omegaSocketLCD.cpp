@@ -28,9 +28,11 @@ typedef uint32_t socklen_t;
 #define LCD_NUM_ROW 2                   // <<----- The number of rows for your LCD
 
 // Socket Server
-#define SERV_PORT 9001
+int SERV_PORT = 9001;
 
-
+I2CAccess * i2cAcc;                 // For general I2C Access
+I2CDevice * lcdDevice;              // Specific I2C Device
+LCD_I2C * lcd;                      // The LCD Display
 
 //the thread function
 void *connection_handler( void * );
@@ -136,10 +138,6 @@ int main( int argc, char* argv[] )
 //
 void *connection_handler( void *socket_desc )
 {
-
-    I2CAccess * i2cAcc;                 // For general I2C Access
-    I2CDevice * lcdDevice;              // Specific I2C Device
-    LCD_I2C * lcd;                      // The LCD Display
 
     // Create and setup I2C Access on channel 0 - the only channel the Omega has
     i2cAcc = new I2CAccessSystem(0);
