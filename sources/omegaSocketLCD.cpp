@@ -124,6 +124,9 @@ int main( int argc, char* argv[] )
         perror("bind failed. Error");
         return 1;
     }
+    printf("Adresa: ");
+    puts( (char*) INADDR_ANY );
+
     printf("Binds on port: ");
     puts( (char*) SERV_PORT );
 
