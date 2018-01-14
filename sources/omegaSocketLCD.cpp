@@ -13,7 +13,7 @@
 typedef uint32_t socklen_t;
 
 // Set up the following as it applies to your specific LCD device
-#define I2C_ADDR 0x3F                   // <<----- The I2C address for your LCD.  Find it using "i2cdetect -y 0"
+#define I2C_ADDR 0x27                   // <<----- The I2C address for your LCD.  Find it using "i2cdetect -y 0"
 #define En_pin 2                        // <<----- The enable pin for your LCD
 #define Rw_pin 1                        // <<----- The read/write pin for your LCD
 #define Rs_pin 0                        // <<----- The reset pin for your LCD
